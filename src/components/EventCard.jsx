@@ -1,26 +1,29 @@
-export default function EventCard({ event }) {
+// ...existing code...
+import React from "react"
+
+export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen }) {
   return (
-    <div className="rounded-2xl overflow-hidden border bg-white shadow-sm">
-      <img
-        src={event.image}
-        alt={event.title}
-        className="h-40 w-full object-cover"
-      />
+    <article className="border rounded-lg overflow-hidden bg-white shadow-sm">
+      <div className="relative">
+        <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
+        <button
+          onClick={onToggleFavorite}
+          aria-label="Favorito"
+          className={`absolute top-2 right-2 p-2 rounded-full transition ${isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"}`}
+        >
+          {isFavorite ? "♥" : "♡"}
+        </button>
+      </div>
       <div className="p-4">
-        <h3 className="text-lg font-semibold line-clamp-2">{event.title}</h3>
-        <p className="text-sm text-gray-600 mt-1">
-          {new Date(event.date).toLocaleDateString()}
-        </p>
-        <p className="text-sm text-gray-600">
-          {event.location?.commune}, {event.location?.region}
-        </p>
-        <div className="mt-2 inline-flex items-center gap-2 text-xs">
-          <span className="rounded-full border px-2 py-0.5">{event.category}</span>
-          <span className="rounded-full border px-2 py-0.5">
-            {event.priceType === "free" ? "Gratis" : "Pagado"}
-          </span>
+        <h3 className="font-semibold">{event.title}</h3>
+        <p className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</p>
+        <p className="mt-2 text-sm">{event.location.commune} · {event.location.region}</p>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-sm font-medium">{event.priceType === "free" ? "Gratis" : "Pagado"}</span>
+          <button onClick={onOpen} className="btn bg-black text-white">Ver</button>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
+// ...existing code...
