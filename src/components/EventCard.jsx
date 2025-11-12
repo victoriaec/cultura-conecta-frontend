@@ -1,4 +1,3 @@
-// ...existing code...
 import React from "react"
 
 export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen }) {
@@ -26,4 +25,4 @@ export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen 
     </article>
   )
 }
-// ...existing code...
+

@@ -1,4 +1,3 @@
-// ...existing code...
 import { useEffect, useState } from "react"
 
 const CATEGORIES = ["Teatro", "Música", "Exposición", "Danza"]
@@ -80,4 +79,3 @@ export default function Filters({ value, onChange }) {
     </div>
   )
 }
-// ...existing code...

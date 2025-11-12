@@ -1,4 +1,3 @@
-// ...existing code...
 import { useMemo, useState, useEffect } from "react"
 import EventCard from "../components/EventCard"
 import Filters from "../components/Filters"
@@ -113,4 +112,3 @@ export default function Home() {
     </main>
   )
 }
-// ...existing code...
