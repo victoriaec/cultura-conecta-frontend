@@ -72,7 +72,13 @@ export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen 
             <div className="p-4">
                 <h3 className="font-semibold">{event.title}</h3>
                 <p className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</p>
-                <p className="mt-2 text-sm">{event.location.commune} · {event.location.region}</p>
+                <p className="mt-2 text-sm">
+                    {/* Si event.location existe, lee commune. Si no, usa una cadena vacía o un valor por defecto. */}
+                    {event.location?.commune || 'Ubicación Desconocida'} 
+                    {' · '} 
+                    {event.location?.region || 'Región Desconocida'}
+                </p>
+                
                 <div className="mt-4 flex items-center justify-between">
                     <span className="text-sm font-medium">{event.priceType === "free" ? "Gratis" : "Pagado"}</span>
                     <button onClick={onOpen} className="btn bg-black text-white">Ver</button>

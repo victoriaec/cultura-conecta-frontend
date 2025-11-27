@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
+import UserFavoritesView from "./pages/UserFavoritesView"
 function Navbar() {
   const base = "px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition"
   return (
@@ -9,7 +10,7 @@ function Navbar() {
          <Link to="/" className="text-xl font-semibold">Cultura Conecta</Link>
           <div className="flex gap-2">
           <Link className={base} to="/">Inicio</Link>
-          <a className={base} href="#favoritos">Favoritos</a>
+          <Link className={base} to="/favorites">Favoritos</Link>
           <Link className={base} to="/login">Login</Link>
         </div>
       </nav>
@@ -26,6 +27,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/favorites" element={<UserFavoritesView />} />
         </Routes>
       </BrowserRouter>
     </div>
