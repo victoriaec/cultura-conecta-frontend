@@ -19,7 +19,7 @@ export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen 
         <p className="mt-2 text-sm">{event.location.commune} · {event.location.region}</p>
         <div className="mt-4 flex items-center justify-between">
           <span className="text-sm font-medium">{event.priceType === "free" ? "Gratis" : "Pagado"}</span>
-          <button onClick={onOpen} className="btn bg-black text-white">Ver</button>
+          <button onClick={onOpen} className="btn bg-[#006A6A] text-white">Ver</button>
         </div>
       </div>
     </article>

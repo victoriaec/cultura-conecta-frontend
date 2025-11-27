@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
-const CATEGORIES = ["Teatro", "Música", "Exposición", "Danza"]
-const REGIONS = ["RM", "Valparaíso", "Biobío", "Los Lagos"]
+const CATEGORIES = ["Cultural"]
 
 export default function Filters({ value, onChange }) {
   const [local, setLocal] = useState(value)
@@ -23,6 +22,7 @@ export default function Filters({ value, onChange }) {
         className="rounded border p-2 md:col-span-2"
       />
 
+      {/* category */}
       <select
         value={local.category || ""}
         onChange={(e) =>
@@ -36,19 +36,7 @@ export default function Filters({ value, onChange }) {
         ))}
       </select>
 
-      <select
-        value={local.region || ""}
-        onChange={(e) =>
-          setLocal((v) => ({ ...v, region: e.target.value || undefined }))
-        }
-        className="rounded border p-2"
-      >
-        <option value="">Todas las regiones</option>
-        {REGIONS.map((r) => (
-          <option key={r} value={r}>{r}</option>
-        ))}
-      </select>
-
+      {/* free / paid */}
       <select
         value={local.free ?? ""}
         onChange={(e) =>
@@ -73,7 +61,7 @@ export default function Filters({ value, onChange }) {
         <option value="title_asc">Título A→Z</option>
       </select>
 
-      <button onClick={apply} className="rounded bg-black px-4 py-2 text-white">
+      <button onClick={apply} className="rounded bg-[#006A6A] px-4 py-2 text-white">
         Aplicar filtros
       </button>
     </div>
