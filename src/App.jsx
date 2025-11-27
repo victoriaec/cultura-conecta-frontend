@@ -5,9 +5,10 @@ import Login from "./pages/Login"
 function Navbar() {
   const base = "px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition"
   return (
-    <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between p-4">
-        <Link to="/" className="text-xl font-semibold">Cultura Conecta</Link>
+    <header className="sticky top-0 z-10 border-b bg-[#006A6A]">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between p-4 text-white">
+        <a href="/" className="text-xl font-semibold">Cultura Conecta</a>
+
         <div className="flex gap-2">
           <Link className={base} to="/">Inicio</Link>
           <a className={base} href="#favoritos">Favoritos</a>
