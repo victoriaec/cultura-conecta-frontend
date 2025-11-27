@@ -1,56 +1,60 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 👈 Importamos useNavigate
 
 export default function Login({ onLogin }) {
-    // 1. **Nuevo estado para username**
+    // 1. Inicializamos la función de navegación
+    const navigate = useNavigate(); // 👈 Hook de navegación
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState(""); 
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false); 
 
-    // URL a la que deseas hacer la solicitud POST (ajusta esta URL)
     const LOGIN_API_URL = "http://localhost:3000/users"; 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // Incluir el username en las credenciales
         const creds = { email, username, password }; 
 
-        // 1. **Guardar el correo electrónico en localStorage** (sin cambios)
         localStorage.setItem("userEmail", email);
         console.log("Email guardado en localStorage:", email);
 
-        // 2. **Realizar la solicitud POST a la API** (cuerpo de la solicitud actualizado)
         try {
             const response = await fetch(LOGIN_API_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(creds), // <-- ENVÍA username, email, y password
+                body: JSON.stringify(creds),
             });
 
-            // 3. Manejar la respuesta
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login exitoso. Respuesta del servidor:", data);
                 
+                // 🚀 REDIRECCIÓN CLAVE
                 if (typeof onLogin === "function") {
                     onLogin(creds);
                 }
+                
+                // Redirigir al usuario a la página de inicio ('/') después del login exitoso
+                navigate('/'); // 👈 Redirige a la ruta '/' (Home)
 
             } else {
                 console.error("Error en el login. Código de estado:", response.status);
+                // Opcional: Mostrar un mensaje de error al usuario aquí
             }
         } catch (error) {
             console.error("Error de red o del servidor:", error);
         } finally {
             setLoading(false);
-            // Resetear campos (opcional)
             setPassword("");
         }
     };
+
+    /* --- Estilos (sin cambios) --- */
 
     const containerStyle = {
         minHeight: "100vh",
