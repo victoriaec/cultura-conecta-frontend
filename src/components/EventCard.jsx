@@ -78,7 +78,6 @@ export default function EventCard({ event, isFavorite, onToggleFavorite, onOpen 
                     {' · '} 
                     {event.location?.region || 'Región Desconocida'}
                 </p>
-                
                 <div className="mt-4 flex items-center justify-between">
                     <span className="text-sm font-medium">{event.priceType === "free" ? "Gratis" : "Pagado"}</span>
                     <button onClick={onOpen} className="btn bg-black text-white">Ver</button>

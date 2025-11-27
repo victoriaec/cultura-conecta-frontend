@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import EventCard from "../components/EventCard";
 
-// URL base de tu backend
 const API_BASE_URL = "http://localhost:3000"; 
 
 export default function UserFavoritesView() {
     const [favoriteEvents, setFavoriteEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const userEmail = localStorage.getItem("userEmail"); // Obtener email al inicio
+    const userEmail = localStorage.getItem("userEmail"); 
 
-    // Función para obtener los eventos favoritos
     const fetchFavorites = useCallback(async () => {
         if (!userEmail) {
             setError("Debes iniciar sesión para ver tus favoritos.");
@@ -22,7 +20,6 @@ export default function UserFavoritesView() {
         setError(null);
 
         try {
-            // Llama a la nueva ruta GET para favoritos, pasando el email como parámetro de consulta
             const response = await fetch(`${API_BASE_URL}/favorites/user?email=${userEmail}`);
             
             if (!response.ok) {
@@ -30,9 +27,26 @@ export default function UserFavoritesView() {
                 throw new Error(errorData.error || `Error al cargar: ${response.status}`);
             }
 
-            const data = await response.json();
-            // Suponemos que la API devuelve un array de eventos
-            setFavoriteEvents(data.data || []); 
+            const res = await response.json();
+            const eventsArray = res.data || [];
+
+            const mappedEvents = eventsArray.map(e => ({
+                id: e.id,
+                title: e.nombre, // <-- Mapear 'nombre' a 'title'
+                date: e.fecha,
+                // Mapear el precio a priceType
+                priceType: e.precio === "0.00" || e.precio === 0 ? "free" : "paid", 
+                location: {
+                    // Mapear 'direccion' a 'location.commune'
+                    commune: e.direccion || "", 
+                    // Si el backend no envía la región, dejarla vacía o usar un valor por defecto
+                    region: e.region || "" 
+                },
+                description: e.descripcion,
+                image: `https://picsum.photos/seed/${e.id}/600/400`
+            }));
+
+            setFavoriteEvents(mappedEvents); 
 
         } catch (err) {
             console.error("Error fetching favorites:", err);
@@ -41,24 +55,22 @@ export default function UserFavoritesView() {
         } finally {
             setIsLoading(false);
         }
-    }, [userEmail]); // Dependencia: userEmail
+    }, [userEmail]); 
 
     useEffect(() => {
         fetchFavorites();
     }, [fetchFavorites]);
 
 
-    // Función que se pasa a EventCard para que se actualice después de un "desfavorito"
     const handleToggleFavorite = (eventId) => {
-        // Opción 1: Re-fetch completo (más simple, menos eficiente)
-        // fetchFavorites();
-
-        // Opción 2: Actualización local (más rápido)
+        // Ejecutar la acción DELETE en la API (manejo de desfavorito)
+        // ... (Tu lógica de API DELETE, que ya debe estar en EventCard)
+        
+        // Actualización local (eliminando el evento de la vista)
         setFavoriteEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
     };
 
 
-    // --- Renderizado de la Vista ---
 
     if (!userEmail) {
         return <div className="p-8 text-center text-red-500">Por favor, inicia sesión para ver tus favoritos.</div>;
@@ -80,14 +92,13 @@ export default function UserFavoritesView() {
                 <p className="text-gray-600">Aún no tienes eventos marcados como favoritos. ¡Busca algo que te guste!</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {favoriteEvents.map(item => (
+                    {favoriteEvents.map(event => (
                         <EventCard
-                            // ⚠️ IMPORTANTE: El backend debe devolver el objeto Evento
-                            key={item.id}
-                            event={item}
-                            isFavorite={true} // Siempre será true en esta vista
-                            onToggleFavorite={handleToggleFavorite} 
-                            onOpen={() => console.log("Abriendo detalle del evento", item.id)} // Implementa tu función de detalle aquí
+                            key={event.id}
+                            event={event} // Evento ya mapeado y estandarizado
+                            isFavorite={true} // Siempre es favorito en esta vista
+                            onToggleFavorite={() => handleToggleFavorite(event.id)} 
+                            onOpen={() => console.log("Abriendo detalle del evento", event.id)}
                         />
                     ))}
                 </div>
